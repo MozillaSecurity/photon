@@ -61,10 +61,19 @@ class Linux(object):
     """
 
     def create(self, size, name=None):
-        mountpoint = os.path.join('/tmp', name)
+        if name is None:
+            while True:
+                mountpoint = os.path.join('/tmp', Photon.random_id())
+                if not os.path.exists(mountpoint):
+                    break
+        else:
+            mountpoint = os.path.join('/tmp', name)
+            if os.path.exists(mountpoint):
+                raise PhotonException('mount point %r exists' % mountpoint)
+        os.mkdir(mountpoint)
         try:
             subprocess.check_call([
-                'mount', '-t', 'tmpfs', '-o', 'size={}', 'none', mountpoint
+                'mount', '-t', 'tmpfs', '-o', 'size={}m'.format(size), 'tmpfs', mountpoint
             ])
         except subprocess.CalledProcessError as e:
             raise PhotonException(e)
@@ -76,8 +85,11 @@ class Linux(object):
     def destroy(self, mountpoint):
         try:
             subprocess.check_call(['umount', mountpoint])
+            if os.path.exists(mountpoint):
+                os.rmdir(mountpoint)
         except subprocess.CalledProcessError as e:
             raise PhotonException(e)
+
 
 
 class Photon(object):

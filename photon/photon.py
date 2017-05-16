@@ -71,7 +71,7 @@ class PhotonCommandLine(object):
         photon = Photon(photon_conf)
         try:
             if args.create:
-                photon.create(args.size, Photon.random_id())
+                photon.create(args.size)
             if args.destroy:
                 photon.destroy(args.destroy)
         except PhotonException as e:
