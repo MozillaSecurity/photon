@@ -22,6 +22,9 @@ class Darwin(object):
     def create(self, size, name=None):
         sectors = 2048 * size
 
+        if name is None:
+            name = Photon.random_id()
+
         try:
             mountpoint = subprocess.check_output([
                 'hdiutil', 'attach', '-nomount', 'ram://{}'.format(sectors)
@@ -60,20 +63,30 @@ class Linux(object):
     Handler class for platform Linux.
     """
 
+    BASEPATH = "/tmp"
+
     def create(self, size, name=None):
         if name is None:
             while True:
-                mountpoint = os.path.join('/tmp', Photon.random_id())
+                mountpoint = os.path.join(Linux.BASEPATH, Photon.random_id())
                 if not os.path.exists(mountpoint):
                     break
         else:
-            mountpoint = os.path.join('/tmp', name)
+            mountpoint = os.path.join(Linux.BASEPATH, name)
             if os.path.exists(mountpoint):
-                raise PhotonException('mount point %r exists' % mountpoint)
+                raise PhotonException(
+                    'Mount point {} exists'.format(mountpoint))
+
         os.mkdir(mountpoint)
+
         try:
             subprocess.check_call([
-                'mount', '-t', 'tmpfs', '-o', 'size={}m'.format(size), 'tmpfs', mountpoint
+                'mount',
+                '-t', 'tmpfs',
+                '-o',
+                'size={}m'.format(size),
+                'tmpfs',
+                mountpoint
             ])
         except subprocess.CalledProcessError as e:
             raise PhotonException(e)
@@ -91,7 +104,6 @@ class Linux(object):
             raise PhotonException(e)
 
 
-
 class Photon(object):
     """
     Photon base class.
@@ -106,7 +118,7 @@ class Photon(object):
         else:
             self.platform = globals()[self.platform_id]
 
-    def create(self, size, name):
+    def create(self, size, name=None):
         disk = self.platform()
         disk.create(size, name)
 

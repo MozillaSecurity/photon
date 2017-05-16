@@ -34,18 +34,43 @@ class PhotonCommandLine(object):
             epilog='The exit status is 0 for non-failures and 1 for failures.')
 
         m = parser.add_argument_group('Mandatory Arguments')
+
         g = m.add_mutually_exclusive_group(required=True)
-        g.add_argument('-create', action='store_true', help='create')
-        g.add_argument('-destroy', metavar='mountpoint', type=str, help='destroy')
+        g.add_argument('-create',
+                       action='store_true',
+                       help='Create a RAM disk volume.')
+        g.add_argument('-destroy',
+                       metavar='mountpoint',
+                       type=str,
+                       help='Destroy RAM disk volume.')
 
         o = parser.add_argument_group('Optional Arguments')
-        o.add_argument('-size', metavar='size', type=int, help='size in mega-bytes.')
-        o.add_argument('-photon', metavar='file', type=argparse.FileType(), default=cls.PHOTON_CONFIG,
+        o.add_argument('-size',
+                       metavar='size',
+                       type=int,
+                       help='Size in mega-bytes.')
+        o.add_argument('-name',
+                       metavar='name',
+                       type=str,
+                       help='Name of the volume.')
+        o.add_argument('-photon',
+                       metavar='file',
+                       type=argparse.FileType(),
+                       default=cls.PHOTON_CONFIG,
                        help='Photon configuration')
-        o.add_argument('-verbosity', metavar='{1..5}', default=2, type=int, choices=list(range(1, 6, 1)),
-                       help='Level of verbosity for logging module.')
-        o.add_argument('-h', '-help', '--help', action='help', help=argparse.SUPPRESS)
-        o.add_argument('-version', action='version', version='%(prog)s {}'.format(cls.VERSION), help=argparse.SUPPRESS)
+        o.add_argument('-verbosity',
+                       metavar='{1..5}',
+                       default=2,
+                       type=int,
+                       choices=list(range(1, 6, 1)),
+                       help='Level of verbosity for the logging module.')
+        o.add_argument('-h', '-help', '--help',
+                       action='help',
+                       help=argparse.SUPPRESS)
+        o.add_argument('-version',
+                       action='version',
+                       version='%(prog)s {}'.format(cls.VERSION),
+                       help=argparse.SUPPRESS)
 
         return parser.parse_args()
 
@@ -57,9 +82,10 @@ class PhotonCommandLine(object):
     def main(cls):
         args = cls.parse_args()
 
-        logging.basicConfig(format='[Photon] %(asctime)s %(levelname)s: %(message)s',
-                            level=args.verbosity * 10,
-                            datefmt='%Y-%m-%d %H:%M:%S')
+        logging.basicConfig(
+            format='[Photon] %(asctime)s %(levelname)s: %(message)s',
+            level=args.verbosity * 10,
+            datefmt='%Y-%m-%d %H:%M:%S')
 
         logging.info('Loading Photon configuration from %s' % args.photon.name)
         try:
@@ -71,7 +97,7 @@ class PhotonCommandLine(object):
         photon = Photon(photon_conf)
         try:
             if args.create:
-                photon.create(args.size)
+                photon.create(args.size, args.name)
             if args.destroy:
                 photon.destroy(args.destroy)
         except PhotonException as e:
