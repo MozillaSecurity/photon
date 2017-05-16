@@ -104,4 +104,4 @@ class Photon(object):
 
     @staticmethod
     def random_id():
-        return 'photon_%06X' % random.randint(0, 0xFFFFFF)
+        return 'photon_{0:0>6x}'.format(random.randint(0, 0xffffff))
