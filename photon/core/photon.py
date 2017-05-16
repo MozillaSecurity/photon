@@ -27,8 +27,7 @@ class Darwin(object):
                 'hdiutil', 'attach', '-nomount', 'ram://{}'.format(sectors)
             ])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
         mountpoint = mountpoint.strip()
 
@@ -37,8 +36,7 @@ class Darwin(object):
                 'diskutil', 'erasevolume', 'HFS+', name, mountpoint
             ])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
         logging.info('JSON: {{"mountpoint": "{}"}}'.format(mountpoint))
 
@@ -49,14 +47,12 @@ class Darwin(object):
         try:
             subprocess.check_call(['umount', '-f', mountpoint])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
         try:
             subprocess.check_call(['hdiutil', 'detach', mountpoint])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
 
 class Linux(object):
@@ -71,8 +67,7 @@ class Linux(object):
                 'mount', '-t', 'tmpfs', '-o', 'size={}', 'none', mountpoint
             ])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
         logging.info('JSON: {{"mountpoint": "{}"}}'.format(mountpoint))
 
@@ -82,8 +77,7 @@ class Linux(object):
         try:
             subprocess.check_call(['umount', mountpoint])
         except subprocess.CalledProcessError as e:
-            logging.error(e)
-            raise PhotonException()
+            raise PhotonException(e)
 
 
 class Photon(object):
@@ -95,9 +89,8 @@ class Photon(object):
         self.conf = conf
         self.platform_id = os.sys.platform.capitalize()
         if self.platform_id not in globals():
-            logging.error(
+            raise PhotonException(
                 "Platform '{}' is not supported.".format(self.platform_id))
-            raise PhotonException()
         else:
             self.platform = globals()[self.platform_id]
 

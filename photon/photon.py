@@ -64,8 +64,8 @@ class PhotonCommandLine(object):
         logging.info('Loading Photon configuration from %s' % args.photon.name)
         try:
             photon_conf = PhotonConf(args.photon.read())
-        except PhotonException as msg:
-            logging.error(msg)
+        except PhotonException as e:
+            logging.error(e)
             return 1
 
         photon = Photon(photon_conf)
@@ -74,8 +74,8 @@ class PhotonCommandLine(object):
                 photon.create(args.size, Photon.random_id())
             if args.destroy:
                 photon.destroy(args.destroy)
-        except PhotonException as msg:
-            logging.error(msg)
+        except PhotonException as e:
+            logging.error(e)
             return 1
         except KeyboardInterrupt:
             print('')
@@ -85,8 +85,8 @@ class PhotonCommandLine(object):
             logging.info("Initiating shutdown routines.")
             try:
                 pass
-            except PhotonException as msg:
-                logging.error(msg)
+            except PhotonException as e:
+                logging.error(e)
                 return 1
 
         return 0
