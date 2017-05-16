@@ -36,7 +36,7 @@ class PhotonCommandLine(object):
         m = parser.add_argument_group('Mandatory Arguments')
         g = m.add_mutually_exclusive_group(required=True)
         g.add_argument('-create', action='store_true', help='create')
-        g.add_argument('-destroy', metavar='file', type=str, help='destroy')
+        g.add_argument('-destroy', metavar='mountpoint', type=str, help='destroy')
 
         o = parser.add_argument_group('Optional Arguments')
         o.add_argument('-size', metavar='size', type=int, help='size in mega-bytes.')
