@@ -103,6 +103,5 @@ class Photon(object):
         disk.destroy(mountpoint)
 
     @staticmethod
-    def random_id(length=6):
-        return 'photon_' + \
-            ''.join(random.choice('0123456789ABCDEF') for i in range(length))
+    def random_id():
+        return 'photon_%06X' % random.randint(0, 0xFFFFFF)
