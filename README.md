@@ -1,4 +1,4 @@
-![](http://people.mozilla.com/~cdiehl/img/octo.png)
+![](http://people.mozilla.com/~cdiehl/img/photon.png)
 
 
 A utility for managing RAM disks.
