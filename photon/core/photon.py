@@ -45,7 +45,6 @@ class Darwin(object):
 
         return mountpoint
 
-
     def destroy(self, mountpoint):
         try:
             subprocess.check_call(['umount', '-f', mountpoint])
