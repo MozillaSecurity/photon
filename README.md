@@ -4,9 +4,16 @@
 A utility for managing RAM disks.
 
 
-## Example
+## Basic Example
 
 ![Dharma Demo](https://people.mozilla.com/~cdiehl/screenshots/photon/example.png "")
+
+
+Retrieve JSON output via the CLI
+```
+./photon.py -create -size 100 2>&1 >/dev/null | ack "JSON: (.*)" --output='$1' | python -m json.tool
+```
+
 
 ## Help Menu
 ![Dharma Demo](https://people.mozilla.com/~cdiehl/screenshots/photon/help.png "")
