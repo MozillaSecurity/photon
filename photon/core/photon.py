@@ -40,7 +40,7 @@ class Darwin(object):
             logging.error(e)
             raise PhotonException()
 
-        logging.info("JSON: {{'mountpoint': {}}}".format(mountpoint))
+        logging.info('JSON: {{"mountpoint": "{}"}}'.format(mountpoint))
 
         return mountpoint
 
@@ -74,7 +74,7 @@ class Linux(object):
             logging.error(e)
             raise PhotonException()
 
-        logging.info("JSON: {{'mountpoint': {}}}".format(mountpoint))
+        logging.info('JSON: {{"mountpoint": "{}"}}'.format(mountpoint))
 
         return mountpoint
 
