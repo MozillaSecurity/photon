@@ -1,7 +1,7 @@
-# Photon
+![](http://people.mozilla.com/~cdiehl/img/octo.png)
+
 
 A utility for managing RAM disks.
-
 
 
 ## Example
