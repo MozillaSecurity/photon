@@ -1,4 +1,4 @@
-![](http://people.mozilla.com/~cdiehl/screenshots/photon/photon.png)
+![Logo](https://github.com/posidron/posidron.github.io/raw/master/static/images/photon.png)
 
 
 A utility for managing RAM disks.
